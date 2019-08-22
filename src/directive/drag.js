@@ -15,6 +15,8 @@ export default {
                     isBackStartPoint: config.value&&config.value.isBackStartPoint,//拖拽完成时返回起点
                     noOverLap: config.value&&config.value.noOverLap,//配置拖拽时所有元素不重叠
                     limitPar: config.value&&config.value.limitPar,//限制元素只在父容器中拖拽
+                    limitX: config.value&&config.value.limitX,//限制元素只在x轴移动
+                    limitY: config.value&&config.value.limitY,//限制元素只在x轴移动
                 }
                 if(options.checkTouch){
                     addClass(el,' __checkTouchBox__')
@@ -60,8 +62,12 @@ export default {
                                 elPositionY = el.offsetParent.offsetHeight-el.offsetHeight;
                             }
                         }
-                        el.style.left = elPositionX + 'px';
-                        el.style.top = elPositionY + 'px';
+                        if(!options.limitY){
+                            el.style.left = elPositionX + 'px';
+                        }
+                        if(!options.limitX){
+                            el.style.top = elPositionY + 'px';
+                        }
                         if(options.checkTouch){
                             checkAllTouch(el,{
                                 noOverLap: options.noOverLap,
@@ -71,23 +77,23 @@ export default {
                         document.onmouseup = () => {
                             let touchedNodeList = [];
                             //计算栅格偏移量
-                            if(options.gridX){
+                            if(options.gridX&&!options.limitY){
                                 el.style.left = Math.round(elPositionX/options.gridX)*options.gridX+ 'px';
                             }
-                            if(options.gridY){
+                            if(options.gridY&&!options.limitX){
                                 el.style.top = Math.round(elPositionY/options.gridY)*options.gridY  + 'px';
                             }
                             if(options.limitPar){
-                                if(parseInt(el.style.left)<0){
+                                if(!options.limitY&&parseInt(el.style.left)<0){
                                     el.style.left = 0;
                                 }
-                                if(el.offsetParent&&(parseInt(el.style.left)+el.offsetWidth)>el.offsetParent.offsetWidth){
+                                if(!options.limitY&&el.offsetParent&&(parseInt(el.style.left)+el.offsetWidth)>el.offsetParent.offsetWidth){
                                     el.style.left = el.offsetParent.offsetWidth-el.offsetWidth + 'px';
                                 }
-                                if(parseInt(el.style.top)<0){
-                                    elPositionY = 0;
+                                if(!options.limitX&&parseInt(el.style.top)<0){
+                                    el.style.top = 0;
                                 }
-                                if(el.offsetParent&&(parseInt(el.style.top)+el.offsetHeight)>el.offsetParent.offsetHeight){
+                                if(!options.limitX&&el.offsetParent&&(parseInt(el.style.top)+el.offsetHeight)>el.offsetParent.offsetHeight){
                                     el.style.top  = el.offsetParent.offsetHeight-el.offsetHeight + 'px';
                                 }
                             }
