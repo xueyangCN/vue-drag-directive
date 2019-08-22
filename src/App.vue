@@ -3,10 +3,10 @@
     <HelloWorld style = 'height:150px;width:150px;background:green;' v-dragme = 'dragConfig1' msg="Welcome to Your Vue.js App"/>
     <HelloWorld style = 'left:300px;' v-dragme = 'dragConfig2' msg="Welcome to Your Vue.js App"/>
     <div style = 'margin-top:300px;margin-left:100px;background:#eee;position:relative;'>
-      <div id = 'os' v-dragme = 'dragConfig1' style = 'height:100px;width:100px;background:yellow;position:absolute;left:300px;border:1px solid #ccc;'></div>
-      <div id = 'os' v-dragme = 'dragConfig1' style = 'height:100px;width:100px;background:yellow;position:absolute;left:400px;border:1px solid #ccc;'></div>
-      <div id = 'os' v-dragme = 'dragConfig1' style = 'height:100px;width:100px;background:yellow;position:absolute;left:500px;border:1px solid #ccc;'></div>
-      <div id = 'os' v-dragme = 'dragConfig1' style = 'height:100px;width:100px;background:yellow;position:absolute;left:600px;border:1px solid #ccc;'></div>
+      <div v-dragme style = 'height:100px;width:100px;background:yellow;position:absolute;left:300px;border:1px solid #ccc;'>1</div>
+      <div v-dragme style = 'height:100px;width:100px;background:yellow;position:absolute;left:400px;border:1px solid #ccc;'>2</div>
+      <div v-dragme = 'dragConfig1' style = 'height:100px;width:100px;background:yellow;position:absolute;left:500px;border:1px solid #ccc;'>3</div>
+      <div v-dragme = 'dragConfig1' style = 'height:100px;width:100px;background:yellow;position:absolute;left:600px;border:1px solid #ccc;'>4</div>
     </div>
   </div>
 </template>

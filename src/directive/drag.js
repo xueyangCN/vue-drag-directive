@@ -194,7 +194,9 @@ function checkTouch(el1,el2,items,noOverLap){
         (left2>left1&&left2<right1&&top2>top1&&top2<bottom1) ||
         (right2>left1&&right2<right1&&top2>top1&&top2<bottom1) ||
         (left2>left1&&left2<right1&&bottom2>top1&&bottom2<bottom1)||
-        (right2>left1&&right2<right1&&bottom2>top1&&bottom2<bottom1)
+        (right2>left1&&right2<right1&&bottom2>top1&&bottom2<bottom1)||
+        ((left1>left2&&left1<right2||right1>left2&&right1<right2)&&top1==top2&&bottom1==bottom2)||
+        ((top1>top2&&top1<bottom2||bottom1>top2&&bottom1<bottom2)&&left1==left2&&right1==right2)
     ){
         //配置所有元素不重叠
         if(noOverLap){
@@ -250,7 +252,7 @@ function checkTouch(el1,el2,items,noOverLap){
                 }
             }
             for(let j = 0;j<items.length;j++){
-                if(items[j] == el2&&items[j]!=el1){
+                if(items[j] === el2&&items[j] === el1){
                     continue;
                 }else{
                     checkTouch(el2,items[j],items,true);
