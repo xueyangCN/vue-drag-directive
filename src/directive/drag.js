@@ -14,6 +14,7 @@ export default {
                     isChangePos: config.value&&config.value.changePosition,//碰撞后是否交换位置,需开启碰撞检测
                     isBackStartPoint: config.value&&config.value.isBackStartPoint,//拖拽完成时返回起点
                     noOverLap: config.value&&config.value.noOverLap,//配置拖拽时所有元素不重叠
+                    limitPar: config.value&&config.value.limitPar,//限制元素只在父容器中拖拽
                 }
                 if(options.checkTouch){
                     addClass(el,' __checkTouchBox__')
@@ -45,6 +46,20 @@ export default {
                         //计算坐标
                         let elPositionX = (e2.clientX - paXY[0] - mouseXY[0]);
                         let elPositionY = (e2.clientY - paXY[1] - mouseXY[1]);
+                        if(options.limitPar){
+                            if(elPositionX<0){
+                                elPositionX = 0;
+                            }
+                            if(el.offsetParent&&(elPositionX+el.offsetWidth)>el.offsetParent.offsetWidth){
+                                elPositionX = el.offsetParent.offsetWidth-el.offsetWidth;
+                            }
+                            if(elPositionY<0){
+                                elPositionY = 0;
+                            }
+                            if(el.offsetParent&&(elPositionY+el.offsetHeight)>el.offsetParent.offsetHeight){
+                                elPositionY = el.offsetParent.offsetHeight-el.offsetHeight;
+                            }
+                        }
                         el.style.left = elPositionX + 'px';
                         el.style.top = elPositionY + 'px';
                         if(options.checkTouch){
@@ -61,6 +76,20 @@ export default {
                             }
                             if(options.gridY){
                                 el.style.top = Math.round(elPositionY/options.gridY)*options.gridY  + 'px';
+                            }
+                            if(options.limitPar){
+                                if(parseInt(el.style.left)<0){
+                                    el.style.left = 0;
+                                }
+                                if(el.offsetParent&&(parseInt(el.style.left)+el.offsetWidth)>el.offsetParent.offsetWidth){
+                                    el.style.left = el.offsetParent.offsetWidth-el.offsetWidth + 'px';
+                                }
+                                if(parseInt(el.style.top)<0){
+                                    elPositionY = 0;
+                                }
+                                if(el.offsetParent&&(parseInt(el.style.top)+el.offsetHeight)>el.offsetParent.offsetHeight){
+                                    el.style.top  = el.offsetParent.offsetHeight-el.offsetHeight + 'px';
+                                }
                             }
                             if(options.checkTouch){
                                 touchedNodeList = checkAllTouch(el,{

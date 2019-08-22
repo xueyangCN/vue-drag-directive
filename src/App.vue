@@ -26,6 +26,7 @@ export default {
         changePosition: false,//位置交换
         isBackStartPoint: false,//拖拽完成回到起点
         noOverLap: true,//拖拽时所有元素不重叠
+        limitPar: false,//限制只在父元素中拖拽
       },
       dragConfig2: {
         gridX: 50,//x轴栅格
@@ -35,6 +36,7 @@ export default {
         changePosition: false,//位置交换
         isBackStartPoint: false,//拖拽完成回到起点
         noOverLap: true,//拖拽时所有元素不重叠
+        limitPar: true,//限制只在父元素中拖拽
       }
     }
   },
