@@ -13,6 +13,7 @@ export default {
                     onTouched: el.__vue__&&el.__vue__.__onTouched__,//有元素碰撞时触发
                     isChangePos: config.value&&config.value.changePosition,//碰撞后是否交换位置,需开启碰撞检测
                     isBackStartPoint: config.value&&config.value.isBackStartPoint,//拖拽完成时返回起点
+                    noOverLap: config.value&&config.value.noOverLap,//配置拖拽时所有元素不重叠
                 }
                 if(options.checkTouch){
                     addClass(el,' __checkTouchBox__')
@@ -48,6 +49,7 @@ export default {
                         el.style.top = elPositionY + 'px';
                         if(options.checkTouch){
                             checkAllTouch(el,{
+                                noOverLap: options.noOverLap,
                                 onTouched: options.onTouched,
                             }); 
                         }
@@ -62,6 +64,7 @@ export default {
                             }
                             if(options.checkTouch){
                                 touchedNodeList = checkAllTouch(el,{
+                                    noOverLap: options.noOverLap,
                                     onTouched: options.onTouched,
                                     end: true,
                                     callback: (list) => {//list为所有与拖拽元素接触的元素
@@ -127,7 +130,7 @@ function checkAllTouch(el,options){
     //接触元素数组，原生对象
     let touchedElList = [];
     for(let i = 0;i<items.length;i++){
-        if(checkTouch(el,items[i])){
+        if(checkTouch(el,items[i],items,options.noOverLap)){
             // console.log('-----碰撞-----');
             touchedElList.push(items[i]);
             if(items[i].__vue__){
@@ -175,7 +178,7 @@ function checkAllTouch(el,options){
     return touchedNodeList;
 }
 //检测碰撞
-function checkTouch(el1,el2){
+function checkTouch(el1,el2,items,noOverLap){
     let position1 = getPosition(el1),position2 = getPosition(el2);
     let left1 = position1[0],top1 = position1[1];
     let left2 = position2[0],top2 = position2[1];
@@ -193,6 +196,67 @@ function checkTouch(el1,el2){
         (left2>left1&&left2<right1&&bottom2>top1&&bottom2<bottom1)||
         (right2>left1&&right2<right1&&bottom2>top1&&bottom2<bottom1)
     ){
+        //配置所有元素不重叠
+        if(noOverLap){
+            let w = 0,h = 0,left = true,top = true,x = true;
+            if(right1>left2&&left1<left2){
+                w = (right1 - left2);
+            }else if(right1>right2&&left1<right2){
+                w = (right2 - left1);
+                left = false;
+            }
+            if(bottom1>top2&&top1<top2){
+                h = (bottom1 - top2);
+            }else if(bottom1>bottom2&&top1<bottom2){
+                h = (bottom2 - top1);
+                top = false;
+            }
+            x = (w<=h);
+            if(right1<=right2&&left1>=left2){
+                x = false;
+                if(top1<bottom2&&bottom1>bottom2){
+                    top = false;
+                }
+            }else if(right1>=right2&&left1<=left2){
+                x = false;
+                if(top1<bottom2&&bottom1>bottom2){
+                    top = false;
+                }
+            }
+            if(top1>=top2&&bottom1<=bottom2){
+                x = true;
+                if(left1<right2&&right1>right2){
+                    left = false;
+                }
+            }else if(top1<=top2&&bottom1>=bottom2){
+                x = true;
+                if(left1<right2&&right1>right2){
+                    left = false;
+                }
+            }
+            if(x){
+                let el2ParentPosX = el2.offsetParent?getPosition(el2.offsetParent)[0]:0;
+                if(left){
+                    el2.style.left = right1 - el2ParentPosX + 'px';
+                }else{
+                    el2.style.left = left1 - el2.offsetWidth - el2ParentPosX + 'px';
+                }
+            }else{
+                let el2ParentPosY = el2.offsetParent?getPosition(el2.offsetParent)[1]:0;
+                if(top){
+                    el2.style.top = bottom1 - el2ParentPosY + 'px';
+                }else{
+                    el2.style.top = top1 - el2.offsetHeight - el2ParentPosY + 'px';
+                }
+            }
+            for(let j = 0;j<items.length;j++){
+                if(items[j] == el2&&items[j]!=el1){
+                    continue;
+                }else{
+                    checkTouch(el2,items[j],items,true);
+                }
+            }
+        }
         return true;
     }else{
         return false;
