@@ -105,7 +105,6 @@ export default {
                                     el.style.top  = el.offsetParent.offsetHeight-el.offsetHeight + 'px';
                                 }
                             }
-                            
                             if(options.checkTouch){
                                 touchedNodeList = checkAllTouch(el,{
                                     noOverLap: options.noOverLap,
@@ -117,7 +116,6 @@ export default {
                                             if(checkInsert(el,list[i])){//嵌入时触发 __beInsert__
                                                 let this_pos = getPosition(list[i]);
                                                 let nowElPos = getPosition(el);
-                                                
                                                 (list[i].__vue__&&list[i].__vue__.__beInsert__)&&list[i].__vue__.__beInsert__({x:(nowElPos[0] - this_pos[0]),y:(nowElPos[1] - this_pos[1])},el,el.__vue__);
                                             }
                                             let distance = getDistance(el,list[i]);
@@ -201,7 +199,6 @@ function checkAllTouch(el,options,sourceEl){
                     from: el.__vue__
                 });
                 if(end){
-                    console.log(items[i].__vue__)
                     items[i].__vue__.__nBeTouchedEnd__&&items[i].__vue__.__nBeTouchedEnd__({//触发被触碰组件事件,结束触发
                         from: el.__vue__
                     });
