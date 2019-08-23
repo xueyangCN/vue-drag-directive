@@ -86,7 +86,7 @@ HelloWorld.vue
 ```javascript
 <template>
   <div class="hello">
-    {{num}}
+    <span v-if = 'beTouched_'>被碰撞了</span>
   </div>
 </template>
 
@@ -94,7 +94,8 @@ HelloWorld.vue
 export default {
   data(){
     return {
-      num: ''
+      num: '',
+      beTouched_: false
     }
   },
   methods:{

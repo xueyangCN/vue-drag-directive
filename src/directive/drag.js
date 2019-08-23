@@ -178,7 +178,7 @@ function checkAllTouch(el,options){
             touchedElList = Array.from(new Set(touchedElList));
             touchedNodeList = Array.from(new Set(touchedNodeList));
             if(el.__vue__&&items[i].__vue__){
-                items[i].__vue__.__beTouched = true;
+                items[i].__vue__.beTouched_ = true;
                 items[i].__vue__.onBeTouched&&items[i].__vue__.__onBeTouched__({//触发被触碰组件事件,过程触发
                     from: el.__vue__
                 });
@@ -188,7 +188,7 @@ function checkAllTouch(el,options){
                     });
                 }
             }else if(items[i].__vue__){
-                items[i].__vue__.__beTouched = true;
+                items[i].__vue__.beTouched_ = true;
                 items[i].__vue__.onBeTouched&&items[i].__vue__.__onBeTouched__({//触发被触碰组件事件，过程触发
                     from: el
                 });
@@ -206,7 +206,7 @@ function checkAllTouch(el,options){
         if(hasClass(items[i],'__beTouched__')){
             removeClass(items[i],'__beTouched__');
         }
-        items[i].__vue__&&(items[i].__vue__.__beTouched = false);
+        items[i].__vue__&&(items[i].__vue__.beTouched_ = false);
     }
     options&&options.onTouched&&options.onTouched({//触发本指令碰撞事件
         touchedNodeList
@@ -336,7 +336,7 @@ function addClass(el,className){
 }
 //删除一个classname
 function removeClass(el,className){
-    el.className = el.className.split(className).join('');
+    el.className = el.className.split(' '+className).join('');
 }
 //判断一个元素中是否含有某类名
 function hasClass(el,className){
