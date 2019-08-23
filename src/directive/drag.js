@@ -26,10 +26,17 @@ export default {
                     if(options.locked){
                         return;
                     }
+                    if(options.isBackStartPoint){
+                        var cloneNode = el.cloneNode(true);
+                        cloneNode.style.zIndex = '-1';
+                        removeClass(cloneNode,'__checkTouchBox__');
+                        el.offsetParent.appendChild(cloneNode);
+                    }
                     //获取父级容器位置
                     let paXY = el.offsetParent?getPosition(el.offsetParent):getPosition(el);
                     //记录元素起始相对位置
                     let elXY = [el.offsetLeft,el.offsetTop];
+                    
                     //记录元素绝对位置
                     let position = getPosition(el);
                     el.posx = position[0];
@@ -45,6 +52,7 @@ export default {
                         }else{
                             window.event.returnValue == false;
                         }
+                        el.__vue__&&el.__vue__.__dragStart__&&el.__vue__.__dragStart__(elXY,e2);
                         //计算坐标
                         let elPositionX = (e2.clientX - paXY[0] - mouseXY[0]);
                         let elPositionY = (e2.clientY - paXY[1] - mouseXY[1]);
@@ -100,6 +108,7 @@ export default {
                             if(options.isBackStartPoint){
                                 el.style.left = elXY[0] + 'px';
                                 el.style.top = elXY[1] + 'px';
+                                cloneNode.remove();
                             }
                             if(options.checkTouch){
                                 touchedNodeList = checkAllTouch(el,{
