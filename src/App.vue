@@ -2,6 +2,7 @@
   <div id="app">
     <HelloWorld style = 'height:150px;width:150px;background:green;' v-dragme = 'dragConfig1' msg="Welcome to Your Vue.js App"/>
     <HelloWorld style = 'left:300px;' v-dragme = 'dragConfig2' msg="Welcome to Your Vue.js App"/>
+    <HelloWorld style = 'left:500px;' v-dragme = 'dragConfig1' msg="Welcome to Your Vue.js App"/>
     <div style = 'margin-top:300px;margin-left:100px;background:#eee;position:relative;'>
       <div v-dragme style = 'height:100px;width:100px;background:yellow;position:absolute;left:300px;border:1px solid #ccc;'>1</div>
       <div v-dragme style = 'height:100px;width:100px;background:yellow;position:absolute;left:400px;border:1px solid #ccc;'>2</div>
@@ -36,7 +37,7 @@ export default {
         checkTouch: true,//检测碰撞
         locked: false,//锁
         changePosition: false,//位置交换
-        isBackStartPoint: false,//拖拽完成回到起点
+        isBackStartPoint: true,//拖拽完成回到起点
         noOverLap: true,//拖拽时所有元素不重叠
         limitPar: true,//限制只在父元素中拖拽
         limitX: false,//限制只在X轴拖拽
@@ -60,6 +61,9 @@ export default {
 </script>
 
 <style>
+*{
+  box-sizing: border-box;
+}
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -72,6 +76,6 @@ export default {
   border:1px solid #ccc;
 }
 .__beTouched__{
-  /* border:2px solid #000; */
+  border:2px solid #000!important;
 }
 </style>

@@ -97,6 +97,10 @@ export default {
                                     el.style.top  = el.offsetParent.offsetHeight-el.offsetHeight + 'px';
                                 }
                             }
+                            if(options.isBackStartPoint){
+                                el.style.left = elXY[0] + 'px';
+                                el.style.top = elXY[1] + 'px';
+                            }
                             if(options.checkTouch){
                                 touchedNodeList = checkAllTouch(el,{
                                     noOverLap: options.noOverLap,
@@ -117,8 +121,6 @@ export default {
                                             }
                                         }
                                         if(options.isBackStartPoint){
-                                            el.style.left = elXY[0] + 'px';
-                                            el.style.top = elXY[1] + 'px';
                                             return;
                                         }
                                         if(!options.isChangePos){
@@ -159,7 +161,7 @@ export default {
     }
 }
 //检测碰撞元素
-function checkAllTouch(el,options){
+function checkAllTouch(el,options,sourceEl){
     let end = options.end || false;
     let items = document.querySelectorAll('.__checkTouchBox__');
     //接触元素数组，vue实例对象
@@ -167,6 +169,9 @@ function checkAllTouch(el,options){
     //接触元素数组，原生对象
     let touchedElList = [];
     for(let i = 0;i<items.length;i++){
+        if(items[i] === el||items[i] === sourceEl){
+            continue;
+        }
         if(checkTouch(el,items[i],items,options.noOverLap)){
             // console.log('-----碰撞-----');
             touchedElList.push(items[i]);
@@ -179,21 +184,21 @@ function checkAllTouch(el,options){
             touchedNodeList = Array.from(new Set(touchedNodeList));
             if(el.__vue__&&items[i].__vue__){
                 items[i].__vue__.beTouched_ = true;
-                items[i].__vue__.onBeTouched&&items[i].__vue__.__onBeTouched__({//触发被触碰组件事件,过程触发
+                items[i].__vue__.__onBeTouched__&&items[i].__vue__.__onBeTouched__({//触发被触碰组件事件,过程触发
                     from: el.__vue__
                 });
                 if(end){
-                    items[i].__vue__.onBeTouchedEnd&&items[i].__vue__.__nBeTouchedEnd__({//触发被触碰组件事件,结束触发
+                    items[i].__vue__.__nBeTouchedEnd__&&items[i].__vue__.__nBeTouchedEnd__({//触发被触碰组件事件,结束触发
                         from: el.__vue__
                     });
                 }
             }else if(items[i].__vue__){
                 items[i].__vue__.beTouched_ = true;
-                items[i].__vue__.onBeTouched&&items[i].__vue__.__onBeTouched__({//触发被触碰组件事件，过程触发
+                items[i].__vue__.__onBeTouched__&&items[i].__vue__.__onBeTouched__({//触发被触碰组件事件，过程触发
                     from: el
                 });
                 if(end){
-                    items[i].__vue__.onBeTouchedEnd&&items[i].__vue__.__nBeTouchedEnd__({//触发被触碰组件事件,结束触发
+                    items[i].__vue__.__nBeTouchedEnd__&&items[i].__vue__.__nBeTouchedEnd__({//触发被触碰组件事件,结束触发
                         from: el
                     });
                 }
@@ -203,14 +208,16 @@ function checkAllTouch(el,options){
             }
             continue;
         }
-        if(hasClass(items[i],'__beTouched__')){
+        if(!sourceEl&&hasClass(items[i],'__beTouched__')){
             removeClass(items[i],'__beTouched__');
         }
         items[i].__vue__&&(items[i].__vue__.beTouched_ = false);
     }
-    options&&options.onTouched&&options.onTouched({//触发本指令碰撞事件
-        touchedNodeList
-    });
+    if(touchedNodeList.length){
+        options&&options.onTouched&&options.onTouched({//触发本指令碰撞事件
+            touchedNodeList
+        });
+    }
     options&&options.callback&&options.callback(touchedElList);
     return touchedNodeList;
 }
@@ -288,13 +295,9 @@ function checkTouch(el1,el2,items,noOverLap){
                     el2.style.top = top1 - el2.offsetHeight - el2ParentPosY + 'px';
                 }
             }
-            for(let j = 0;j<items.length;j++){
-                if(items[j] === el2&&items[j] === el1){
-                    continue;
-                }else{
-                    checkTouch(el2,items[j],items,true);
-                }
-            }
+            setTimeout(() => {//放在最后执行，同步会造成类名检测异常
+                checkAllTouch(el2,{noOverLap: true},el1)
+            },0)
         }
         return true;
     }else{
