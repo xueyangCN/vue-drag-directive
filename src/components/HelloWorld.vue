@@ -12,8 +12,8 @@ export default {
     }
   },
   methods:{
-    __beInsert__(el,vueEl){//拖拽结束是否有元素进入
-      console.log(el,vueEl);
+    __beInsert__(pos,el,vueEl){//拖拽结束是否有元素进入
+      console.log(pos,el,vueEl);//拖入元素在本元素中的相对位置、拖入元素dom、拖入元素vue实例
     },
     __onBeTouchedEnd__(e){//其他元素拖拽结束，碰撞本元素触发
       console.log(e)

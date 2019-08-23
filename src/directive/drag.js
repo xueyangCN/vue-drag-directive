@@ -106,7 +106,9 @@ export default {
                                         var nearEl = null,num = Infinity;
                                         for(let i = 0;i<list.length;i++){
                                             if(checkInsert(el,list[i])){//嵌入时触发 __beInsert__
-                                                (list[i].__vue__&&list[i].__vue__.__beInsert__)&&list[i].__vue__.__beInsert__(el,el.__vue__);
+                                                let this_pos = getPosition(list[i]);
+                                                let nowElPos = getPosition(el);
+                                                (list[i].__vue__&&list[i].__vue__.__beInsert__)&&list[i].__vue__.__beInsert__({x:(nowElPos[0] - this_pos[0]),y:(nowElPos[1] - this_pos[1])},el,el.__vue__);
                                             }
                                             let distance = getDistance(el,list[i]);
                                             if(distance<num){
