@@ -108,7 +108,7 @@ export default {
                             if(options.isBackStartPoint){
                                 el.style.left = elXY[0] + 'px';
                                 el.style.top = elXY[1] + 'px';
-                                cloneNode.offsetParent.removeChild(cloneNode);
+                                cloneNode&&cloneNode.offsetParent&&cloneNode.offsetParent.removeChild(cloneNode);
                                 // cloneNode.remove();
                             }
                             if(options.checkTouch){
@@ -150,6 +150,7 @@ export default {
                                     }
                                 }); 
                             }
+                            document.onmouseup = null;
                             document.onmousemove = null;
                             options.done&&options.done({
                                 touchedNodeList,
