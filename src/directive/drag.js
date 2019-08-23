@@ -108,7 +108,8 @@ export default {
                             if(options.isBackStartPoint){
                                 el.style.left = elXY[0] + 'px';
                                 el.style.top = elXY[1] + 'px';
-                                cloneNode.remove();
+                                cloneNode.offsetParent.removeChild(cloneNode);
+                                // cloneNode.remove();
                             }
                             if(options.checkTouch){
                                 touchedNodeList = checkAllTouch(el,{
