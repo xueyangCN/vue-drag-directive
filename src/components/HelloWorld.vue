@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-    <span v-if = 'beTouched_'>被碰撞了</span>
+    <!-- <span v-if = 'beTouched_'>被碰撞了</span> -->
   </div>
 </template>
 
@@ -10,6 +10,13 @@ export default {
     return {
       num: '',
       beTouched_: false
+    }
+  },
+  mounted() {
+    console.log(this.pos)
+    if(this.pos){
+      this.$el.style.left = this.pos.x + 'px';
+      this.$el.style.top = this.pos.y + 'px';
     }
   },
   methods:{
@@ -30,7 +37,9 @@ export default {
     }
   },
   props: {
-    msg: String
+    msg: String,
+    type: String,
+    pos: Object
   }
 }
 </script>

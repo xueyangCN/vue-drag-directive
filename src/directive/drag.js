@@ -17,15 +17,36 @@ export default {
                     limitPar: config.value&&config.value.limitPar,//限制元素只在父容器中拖拽
                     limitX: config.value&&config.value.limitX,//限制元素只在x轴移动
                     limitY: config.value&&config.value.limitY,//限制元素只在x轴移动
+                    anchorPoint: config.value&&config.value.anchorPoint,//拖拽锚点元素锚点
+                    dragPoint0: config.value&&config.value.dragPoint0,//拖拽时跟随鼠标0点
+                }
+                let ZINDEX = el.style.zIndex;
+                if(hasClass(el,'__checkTouchBox__')){
+                    removeClass(el,'__checkTouchBox__');
                 }
                 if(options.checkTouch){
-                    addClass(el,' __checkTouchBox__')
+                    addClass(el,'__checkTouchBox__')
+                }
+                if(hasClass(el,'__checkTouchBox__')){
+                    removeClass(el,'__locked__');
                 }
                 el.style.position = 'absolute';
-                el.onmousedown = (e1) => {
+                if(options.locked){
+                    addClass(el,'__locked__');
+                    el.style.position = 'relative';
+                }
+                el.oncontextmenu = function(){return false;}
+                el.onmousedown = null;//更新后取消el原来绑定的事件
+                let anchorPoint = el;
+                if(options.anchorPoint){
+                    anchorPoint = options.anchorPoint;
+                    anchorPoint.oncontextmenu = function(){return false;}
+                }
+                anchorPoint.onmousedown = (e1) => {
                     if(options.locked){
                         return;
                     }
+                    el.style.zIndex = '10000';
                     if(options.isBackStartPoint){
                         var cloneNode = el.cloneNode(true);
                         cloneNode.style.zIndex = '-1';
@@ -46,6 +67,9 @@ export default {
                         e1.clientX - position[0],
                         e1.clientY - position[1]
                     ]
+                    if(options.dragPoint0){
+                        mouseXY = [0,0];
+                    }
                     document.onmousemove = (e2) => {
                         if(e2.preventDefault){
                             e2.preventDefault();
@@ -76,8 +100,16 @@ export default {
                         if(!options.limitX){
                             el.style.top = elPositionY + 'px';
                         }
-                        if(options.checkTouch){
+                        //计算栅格偏移量
+                        if(options.gridX&&!options.limitY){
+                            el.style.left = Math.round(elPositionX/options.gridX)*options.gridX+ 'px';
+                        }
+                        if(options.gridY&&!options.limitX){
+                            el.style.top = Math.round(elPositionY/options.gridY)*options.gridY  + 'px';
+                        }
+                        if(options.checkTouch&&e1.which==1){
                             checkAllTouch(el,{
+                                locked: options.locked,
                                 noOverLap: options.noOverLap,
                                 onTouched: options.onTouched,
                             }); 
@@ -107,6 +139,7 @@ export default {
                             }
                             if(options.checkTouch){
                                 touchedNodeList = checkAllTouch(el,{
+                                    locked: options.locked,
                                     noOverLap: options.noOverLap,
                                     onTouched: options.onTouched,
                                     end: true,
@@ -163,6 +196,8 @@ export default {
                                     y: elXY[1]
                                 }
                             })
+                            el.style.zIndex = ZINDEX;
+                            return false;
                         }
                     }
                     
@@ -173,6 +208,7 @@ export default {
 }
 //检测碰撞元素
 function checkAllTouch(el,options,sourceEl){
+    let locked = options.locked;
     let end = options.end || false;
     let items = document.querySelectorAll('.__checkTouchBox__');
     //接触元素数组，vue实例对象
@@ -180,7 +216,7 @@ function checkAllTouch(el,options,sourceEl){
     //接触元素数组，原生对象
     let touchedElList = [];
     for(let i = 0;i<items.length;i++){
-        if(items[i] === el||items[i] === sourceEl){
+        if(locked||items[i] === el||items[i] === sourceEl){
             continue;
         }
         if(checkTouch(el,items[i],items,options.noOverLap)){
@@ -254,7 +290,7 @@ function checkTouch(el1,el2,items,noOverLap){
         ((top1>top2&&top1<bottom2||bottom1>top2&&bottom1<bottom2)&&left1==left2&&right1==right2)
     ){
         //配置所有元素不重叠
-        if(noOverLap){
+        if(noOverLap&&!hasClass(el2,'__locked__')){
             let w = 0,h = 0,left = true,top = true,x = true;
             if(right1>left2&&left1<left2){
                 w = (right1 - left2);

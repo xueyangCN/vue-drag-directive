@@ -42,14 +42,12 @@ export default {
         limitPar: true,//限制只在父元素中拖拽
         limitX: false,//限制只在X轴拖拽
         limitY: false,//限制只在Y轴拖拽
+        anchorPoint: null,
+        dragPoint0: false,
       }
     }
   },
   mounted(){
-    setTimeout(() => {
-      // alert(1);
-      // this.dragConfig2.locked = true;
-    },5000)
   },
   methods:{
       
@@ -76,6 +74,6 @@ export default {
   border:1px solid #ccc;
 }
 .__beTouched__{
-  border:2px solid #000!important;
+  /* border:2px solid #000!important; */
 }
 </style>
