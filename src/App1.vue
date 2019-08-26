@@ -1,5 +1,8 @@
 <template>
     <div id="app">
+        <div>
+            <button @click = 'out'>输出</button>
+        </div>
         <div class = 'left' style = ''>
             <div :key = 'index' v-for = '(item,index) in itemModels' style = 'position: relative;height:50px;'>
                 <dragItem  :type = 'item.type' :ref = '`item${item.type}`'/>
@@ -82,6 +85,9 @@ export default {
       },500)
   },
   methods:{
+      out(){
+          console.log(this.componentList);
+      },
       beInsert(data){
           console.log(data);
           for(let i in this.itemModels){
@@ -120,7 +126,7 @@ export default {
 }
 .left{
     height:500px;
-    width:200px;
+    width:150px;
     float:left;
     margin: 20px;
     border:1px solid #ccc;

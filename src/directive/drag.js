@@ -35,6 +35,9 @@ export default {
                     addClass(el,'__locked__');
                     el.style.position = 'relative';
                 }
+                el.onclick = () => {
+                    document.onmousemove = null;
+                }
                 el.oncontextmenu = function(){return false;}
                 el.onmousedown = null;//更新后取消el原来绑定的事件
                 let anchorPoint = el;
@@ -154,7 +157,14 @@ export default {
                                             if(checkInsert(el,list[i])){//嵌入时触发 __beInsert__
                                                 let this_pos = getPosition(list[i]);
                                                 let nowElPos = getPosition(el);
-                                                (list[i].__vue__&&list[i].__vue__.__beInsert__)&&list[i].__vue__.__beInsert__({x:(nowElPos[0] - this_pos[0]),y:(nowElPos[1] - this_pos[1])},el,el.__vue__);
+                                                let scrollX = 0,scrollY = 0;
+                                                if(list[i].scrollTop>0){
+                                                    scrollY = list[i].scrollTop;
+                                                }
+                                                if(list[i].scrollLeft>0){
+                                                    scrollX = list[i].scrollLeft;
+                                                }
+                                                (list[i].__vue__&&list[i].__vue__.__beInsert__)&&list[i].__vue__.__beInsert__({x:(nowElPos[0] - this_pos[0] + scrollX),y:(nowElPos[1] - this_pos[1] + scrollY)},el,el.__vue__);
                                             }
                                             let distance = getDistance(el,list[i]);
                                             if(distance<num){

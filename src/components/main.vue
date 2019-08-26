@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-      <component :pos = 'item.pos' v-dragme = 'item.conf'  :key = 'index' v-for = '(item,index) in componentList' v-bind:is = 'item.component' />
+      <component :ref = '`components${index}`' :pos = 'item.pos' v-dragme = 'item.conf'  :key = 'index' v-for = '(item,index) in componentList' v-bind:is = 'item.component' />
   </div>
 </template>
 

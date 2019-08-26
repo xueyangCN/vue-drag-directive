@@ -1,15 +1,5 @@
 <template>
-  <div class="list">
-      <table style = 'text-align:center;border-collapse:collapse;' border = '1' >
-          <tr>
-              <td>姓名</td>
-              <td>电话</td>
-          </tr>
-          <tr>
-              <td></td>
-              <td></td>
-          </tr>
-      </table>
+  <div class="hello">
   </div>
 </template>
 
@@ -55,12 +45,13 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.list{
-    width:80%;
-    
-}
-.list table{
-    width:100%;
-    height:120px;
+.hello{
+  height:100px;
+  width:100px;
+  left:0;
+  top:0;
+  background: red;
+  border: 1px solid #ccc;
+  cursor:pointer;
 }
 </style>
