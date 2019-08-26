@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import dragbox from './dragBox.vue'
 export default {
   data(){
     return {
@@ -27,6 +28,7 @@ export default {
     }
   },
   components: {
+    dragbox
   },
   props: {
     componentList: Array
@@ -43,5 +45,6 @@ export default {
     left:0;
     top:0;
     overflow-y: auto;
+    overflow-x: hidden;
 }
 </style>

@@ -1,15 +1,6 @@
 <template>
-  <div class="hello">
-      <label>
-          姓名
-          <input type = 'text' />
-      </label>
-      <label>
-          电话
-          <input type = 'text' />
-      </label>
-      
-    <!-- <span v-if = 'beTouched_'>被碰撞了</span> -->
+  <div class="box">
+      <slot></slot>
   </div>
 </template>
 
@@ -55,13 +46,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.hello{
-  /* height:100px;
-  width:100px; */
-  left:0;
-  top:0;
-  /* background: red; */
-  /* border: 1px solid #ccc; */
+.box{
+  height:auto;
+  width:auto;
   cursor:pointer;
 }
 </style>

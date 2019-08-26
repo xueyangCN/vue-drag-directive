@@ -1,15 +1,16 @@
 <template>
-  <div class="hello">
-      <label>
-          姓名
-          <input type = 'text' />
-      </label>
-      <label>
-          电话
-          <input type = 'text' />
-      </label>
-      
-    <!-- <span v-if = 'beTouched_'>被碰撞了</span> -->
+  <div class="list">
+      <table style = 'text-align:center;' border = '1' >
+          <tr>
+              <td>1</td>
+              <td>2</td>
+              <td>3</td>
+              <td>4</td>
+              <td>5</td>
+              <td>6</td>
+              <td>7</td>
+          </tr>
+      </table>
   </div>
 </template>
 
@@ -55,13 +56,12 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.hello{
-  /* height:100px;
-  width:100px; */
-  left:0;
-  top:0;
-  /* background: red; */
-  /* border: 1px solid #ccc; */
-  cursor:pointer;
+.list{
+    width:80%;
+    
+}
+.list table{
+    width:100%;
+    height:120px;
 }
 </style>

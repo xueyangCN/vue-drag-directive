@@ -1,7 +1,6 @@
 <template>
     <div id="app">
         <div class = 'left' style = ''>
-            
             <div :key = 'index' v-for = '(item,index) in itemModels' style = 'position: relative;height:50px;'>
                 <dragItem  :type = 'item.type' :ref = '`item${item.type}`'/>
             </div>
@@ -100,7 +99,6 @@ export default {
                   });
               }
           }
-          console.log(this.componentList)
           
       }
   },
@@ -130,9 +128,9 @@ export default {
     padding:20px;
 }
 .right{
-    height:600px;
+    height:500px;
     border:1px solid #ccc;
-    width:1000px;
+    width:902px;
     float:left;
     margin: 20px;
     position: relative;
