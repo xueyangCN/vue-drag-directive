@@ -113,8 +113,13 @@ export default {
                                 noOverLap: options.noOverLap,
                                 onTouched: options.onTouched,
                             }); 
+                        }else if(e1.which==3){
+                            el.style.opacity = '0.3';
                         }
                         document.onmouseup = () => {
+                            if(e1.which==3){
+                                el.style.opacity = 1;
+                            }
                             let touchedNodeList = [];
                             //计算栅格偏移量
                             if(options.gridX&&!options.limitY){
