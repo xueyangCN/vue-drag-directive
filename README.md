@@ -11,6 +11,8 @@ dragConfig: {
   limitPar: false,//限制只在父元素中拖拽
   limitX: false,//限制只在X轴拖拽
   limitY: false,//限制只在Y轴拖拽
+  anchorPoint: null,//锚点(原生 dom对象)
+  dragPoint0: false,//锚点拖拽时，位置跟踪鼠标
 }
 ```
 例子 demo.vue
